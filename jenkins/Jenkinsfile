@@ -3,6 +3,9 @@ pipeline {
     //options {
      //   skipStagesAfterUnstable()
     //}
+    environment {
+        SONARQUBE_ENV = 'SonarQube'
+    }
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
         maven "Jenkins-maven"
@@ -20,6 +23,13 @@ pipeline {
             post {
                 always {
                     junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv("${SONARQUBE_ENV}") {
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
