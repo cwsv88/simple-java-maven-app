@@ -28,12 +28,13 @@ pipeline {
                 SONAR_HOST = 'http://172.18.0.2:9000'
             }
             steps {
-                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                withCredentials([string(credentialsId: 'sonarqube-id', variable: 'SONAR_TOKEN')]) {
                     sh """
                     mvn sonar:sonar \
                       -Dsonar.host.url=${SONAR_HOST} \
                       -Dsonar.login=${SONAR_TOKEN} \
-                      -Dsonar.projectKey=my-project
+                      -Dsonar.projectKey=my-app \
+                      -Dsonar.verbose=true
                     """
                 }
             }
