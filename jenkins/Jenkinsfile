@@ -27,7 +27,7 @@ pipeline {
             environment {
                 // Usa variables de entorno en lugar de hardcodear
                 SONAR_HOST_URL = 'http://sonarqube:9000'
-                SONAR_AUTH_TOKEN = credentials('11331f41deeeb6d7f239c505841ca4326b')
+                SONAR_AUTH_TOKEN = credentials('secret-sonarqube')
             }
             steps {
                 sh """
