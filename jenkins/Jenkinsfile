@@ -29,16 +29,16 @@ pipeline {
                     SONAR_HOST_URL = 'http://sonarqube:9000'
                     SONAR_AUTH_TOKEN = credentials('11331f41deeeb6d7f239c505841ca4326b')
                 }
-            steps {
-                sh """
-                mvn sonar:sonar \
-                  -Dsonar.host.url=${SONAR_HOST_URL} \
-                  -Dsonar.login=${SONAR_AUTH_TOKEN} \
-                  -Dsonar.projectKey=my-project \
-                  -Dsonar.projectName=MyApp
-                """                
-                }
-            }
+                steps {
+                    sh """
+                    mvn sonar:sonar \
+                      -Dsonar.host.url=${SONAR_HOST_URL} \
+                      -Dsonar.login=${SONAR_AUTH_TOKEN} \
+                      -Dsonar.projectKey=my-project \
+                      -Dsonar.projectName=MyApp
+                    """                
+                    }
+               }
         }
         stage('Deliver') { 
             steps {
