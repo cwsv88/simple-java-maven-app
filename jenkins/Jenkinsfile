@@ -23,22 +23,6 @@ pipeline {
                 }
             }
         }
-        stage('SonarQube Analysis') {
-            environment {
-                SONAR_HOST = 'http://172.18.0.2:9000'
-            }
-            steps {
-                withCredentials([string(credentialsId: 'sonarqube-2', variable: 'SONAR_TOKEN')]) {
-                    sh """
-                    mvn sonar:sonar \
-                      -Dsonar.host.url=${SONAR_HOST} \
-                      -Dsonar.login=${SONAR_TOKEN} \
-                      -Dsonar.projectKey=my-app \
-                      -Dsonar.verbose=true
-                    """
-                }
-            }
-        }
         stage('Deliver') { 
             steps {
                 sh './jenkins/scripts/deliver.sh' 
