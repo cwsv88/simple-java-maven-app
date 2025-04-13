@@ -29,7 +29,8 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh 'mvn sonar:sonar'
+                    //sh 'mvn sonar:sonar'
+                    sh 'mvn sonar:sonar -Dsonar.login=11331f41deeeb6d7f239c505841ca4326b'
                 }
             }
         }
