@@ -3,9 +3,6 @@ pipeline {
     //options {
      //   skipStagesAfterUnstable()
     //}
-    environment {
-        SONARQUBE_ENV = 'SonarQube'
-    }
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
         maven "Jenkins-maven"
@@ -27,10 +24,19 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
+                environment {
+                    // Usa variables de entorno en lugar de hardcodear
+                    SONAR_HOST_URL = 'http://sonarqube:9000'
+                    SONAR_AUTH_TOKEN = credentials('11331f41deeeb6d7f239c505841ca4326b')
+                }
             steps {
-                withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    //sh 'mvn sonar:sonar'
-                    sh 'mvn sonar:sonar -Dsonar.login=11331f41deeeb6d7f239c505841ca4326b'
+                sh """
+                mvn sonar:sonar \
+                  -Dsonar.host.url=${SONAR_HOST_URL} \
+                  -Dsonar.login=${SONAR_AUTH_TOKEN} \
+                  -Dsonar.projectKey=my-project \
+                  -Dsonar.projectName=MyApp
+                """                
                 }
             }
         }
