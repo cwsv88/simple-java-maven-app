@@ -25,18 +25,17 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             environment {
-                // Usa variables de entorno en lugar de hardcodear
-                SONAR_HOST_URL = 'http://sonarqube:9000'
-                SONAR_AUTH_TOKEN = credentials('sonarqube')
+                SONAR_HOST = 'http://sonarqube:9000'
             }
             steps {
-                sh """
-                mvn sonar:sonar \
-                  -Dsonar.host.url=${SONAR_HOST_URL} \
-                  -Dsonar.login=${SONAR_AUTH_TOKEN} \
-                  -Dsonar.projectKey=my-project \
-                  -Dsonar.projectName=MyApp
-                """
+                withCredentials([string(credentialsId: 'secret-sonarqube', variable: 'SONAR_TOKEN')]) {
+                    sh """
+                    mvn sonar:sonar \
+                      -Dsonar.host.url=${SONAR_HOST} \
+                      -Dsonar.login=${SONAR_TOKEN} \
+                      -Dsonar.projectKey=my-project
+                    """
+                }
             }
         }
         stage('Deliver') { 
