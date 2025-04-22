@@ -41,7 +41,7 @@ pipeline {
                     def VERSION = sh(script: "mvn -q -DforceStdout help:evaluate -Dexpression=project.version", returnStdout: true).trim()
 
                     // Ejecuta el .jar generado
-                    sh "java -jar target/${NAME}-${VERSION}.jar"
+                    bat "java -jar target/${NAME}-${VERSION}.jar"
                 }
             }
         }
