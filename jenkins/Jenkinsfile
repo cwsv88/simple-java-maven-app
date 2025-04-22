@@ -25,24 +25,7 @@ pipeline {
         }
         stage('Deliver') { 
             steps {
-                //sh './jenkins/scripts/deliver.sh' 
-                    bat '''
-                    :: Compilar el proyecto e instalar en el repositorio local
-                    mvn jar:jar install:install help:evaluate -Dexpression=project.name
-
-                    :: Obtener el nombre del proyecto desde el pom.xml
-                    FOR /F "tokens=* USEBACKQ" %%F IN (`mvn -q -DforceStdout help:evaluate -Dexpression=project.name`) DO SET NAME=%%F
-
-                    :: Obtener la versión del proyecto desde el pom.xml
-                    FOR /F "tokens=* USEBACKQ" %%F IN (`mvn -q -DforceStdout help:evaluate -Dexpression=project.version`) DO SET VERSION=%%F
-
-                    :: Mostrar los valores obtenidos (opcional)
-                    echo Nombre del proyecto: %NAME%
-                    echo Version del proyecto: %VERSION%
-
-                    :: Ejecutar el .jar generado
-                    java -jar target\\%NAME%-%VERSION%.jar
-                '''
+                sh './jenkins/scripts/deliver.sh' 
                 }
             }
         }
