@@ -28,20 +28,19 @@ pipeline {
                 //sh './jenkins/scripts/deliver.sh' 
                     script {
                     // Instala la aplicación Maven en el repositorio local
-                    sh '''
-                        set -x
+                    // Instala la aplicación Maven en el repositorio local
+                    bat '''
                         mvn jar:jar install:install help:evaluate -Dexpression=project.name
-                        set +x
                     '''
 
                     // Extrae el nombre del proyecto desde el pom.xml
-                    def NAME = sh(script: "mvn -q -DforceStdout help:evaluate -Dexpression=project.name", returnStdout: true).trim()
+                    def NAME = bat(script: 'mvn -q -DforceStdout help:evaluate -Dexpression=project.name', returnStdout: true).trim()
 
                     // Extrae la versión del proyecto desde el pom.xml
-                    def VERSION = sh(script: "mvn -q -DforceStdout help:evaluate -Dexpression=project.version", returnStdout: true).trim()
+                    def VERSION = bat(script: 'mvn -q -DforceStdout help:evaluate -Dexpression=project.version', returnStdout: true).trim()
 
-                    // Ejecuta el .jar generado
-                    bat "java -jar target/${NAME}-${VERSION}.jar"
+                    // Ejecuta el .jar generado (en entorno Windows)
+                    bat "java -jar target\\${NAME}-${VERSION}.jar"
                 }
             }
         }
